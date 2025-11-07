@@ -1,35 +1,24 @@
-# Algoritmo de Sudoku - Técnica: Backtracking (Busca com Retrocesso)
-# Integrantes:
-# Ana Beatriz Carvalho Oliveira
-# Cristiane Almeida Santos Nascimento
-# Yuri Rezende Santos
 
 from colorama import Fore, Style, init
 init(autoreset=True)
 
 def mostrar(tabuleiro, original=None):
-    """Exibe o Sudoku de forma visual, clara e alinhada."""
-    print("╔" + "════╦" * 8 + "════╗")
+    """Exibe o Sudoku com cores: azul para números originais, verde para os resolvidos."""
+    print("+" + "---+" * 9)
     for i in range(9):
-        linha = "║"
         for j in range(9):
             valor = tabuleiro[i][j]
             if valor == 0:
-                char = "  "
+                char = " "
             else:
                 if original and original[i][j] != 0:
-                    char = f"🔵{valor}"  # número original
+                    char = f"{Fore.CYAN}{valor}{Style.RESET_ALL}"  # número original
                 else:
-                    char = f"🟢{valor}"  # número resolvido
-            linha += f" {char} "
-            if (j + 1) % 3 == 0 and j != 8:
-                linha += "║"
-        linha += "║"
-        print(linha)
-        if (i + 1) % 3 == 0 and i != 8:
-            print("╠" + "════╬" * 8 + "════╣")
-    print("╚" + "════╩" * 8 + "════╝")
-
+                    char = f"{Fore.GREEN}{valor}{Style.RESET_ALL}"  # número resolvido
+            print(f"| {char}", end=" ")
+        print("|")
+        if (i + 1) % 3 == 0:
+            print("+" + "---+" * 9)
 
 def encontrar_vazio(tabuleiro):
     """Encontra a próxima posição vazia (representada por 0)."""
