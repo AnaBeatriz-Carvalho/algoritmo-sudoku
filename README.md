@@ -59,8 +59,8 @@ O programa irá ler o arquivo configurado (por padrão em `dados/sudoku_facil.tx
 
 ## ✒️ Autores
 
-- **Ana Beatriz Carvalho** 
-- **Cristiane** 
-- **Yuri Rezende** 
+- **Ana Beatriz Carvalho Oliveira** 
+- **Cristiane Almeida Santos Nascimento** 
+- **Yuri Rezende Santos** 
 ---
 
