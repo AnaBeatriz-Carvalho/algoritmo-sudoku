@@ -1,9 +1,11 @@
-
+import os
 from colorama import Fore, Style, init
 init(autoreset=True)
 
+# --- Funções do seu código original (estão corretas) ---
+
 def mostrar(tabuleiro, original=None):
-    """Exibe o Sudoku com cores: azul para números originais, verde para os resolvidos."""
+    """Exibe o Sudoku com cores: ciano para originais, verde para resolvidos."""
     print("+" + "---+" * 9)
     for i in range(9):
         for j in range(9):
@@ -49,7 +51,6 @@ def valido(tabuleiro, num, pos):
         for j in range(inicio_coluna, inicio_coluna + 3):
             if tabuleiro[i][j] == num and (i, j) != pos:
                 return False
-
     return True
 
 def resolver(tabuleiro):
@@ -67,31 +68,81 @@ def resolver(tabuleiro):
             if resolver(tabuleiro):
                 return True
 
-            tabuleiro[linha][coluna] = 0  # volta atrás
+            tabuleiro[linha][coluna] = 0  # volta atrás (Backtrack)
 
     return False  # sem solução possível
 
-# Exemplo de entrada (0 representa espaço vazio)
-tabuleiro_exemplo = [
-    [5, 3, 0, 0, 7, 0, 0, 0, 0],
-    [6, 0, 0, 1, 9, 5, 0, 0, 0],
-    [0, 9, 8, 0, 0, 0, 0, 6, 0],
-    [8, 0, 0, 0, 6, 0, 0, 0, 3],
-    [4, 0, 0, 8, 0, 3, 0, 0, 1],
-    [7, 0, 0, 0, 2, 0, 0, 0, 6],
-    [0, 6, 0, 0, 0, 0, 2, 8, 0],
-    [0, 0, 0, 4, 1, 9, 0, 0, 5],
-    [0, 0, 0, 0, 8, 0, 0, 7, 9]
-]
+# --- Função ADICIONADA para cumprir os requisitos ---
 
-# Faz uma cópia do tabuleiro original (para saber quais números já existiam)
-original = [linha[:] for linha in tabuleiro_exemplo]
+def carregar_instancia_de_arquivo(caminho_arquivo):
+    """
+    Lê uma instância do Sudoku de um arquivo .txt.
+    Formato esperado: 9 linhas, cada linha com 9 números separados por vírgula.
+    Ex: 5,3,0,0,7,0,0,0,0
+    """
+    if not os.path.exists(caminho_arquivo):
+        print(f"{Fore.RED}ERRO: Arquivo de instância não encontrado em '{caminho_arquivo}'")
+        return None
+    
+    tabuleiro = []
+    try:
+        with open(caminho_arquivo, 'r') as f:
+            for linha_str in f:
+                linha_limpa = linha_str.strip()
+                if not linha_limpa:
+                    continue
+                
+                numeros = [int(n) for n in linha_limpa.split(',')]
+                
+                if len(numeros) != 9:
+                    raise ValueError(f"Linha inválida, não 9 números: '{linha_limpa}'")
+                
+                tabuleiro.append(numeros)
+        
+        if len(tabuleiro) != 9:
+             raise ValueError(f"Arquivo não 9 linhas: encontrado {len(tabuleiro)}")
+        
+        return tabuleiro
+    
+    except Exception as e:
+        print(f"{Fore.RED}ERRO ao ler o arquivo: {e}")
+        return None
 
-print("Tabuleiro inicial:")
-mostrar(tabuleiro_exemplo, original)
+# --- Bloco Principal de Execução (main) ---
+def main():
+    """
+    Função principal que organiza a execução do programa.
+    """
+    # 1. DEFINIR A ENTRADA
+    # O código vai procurar por uma pasta "dados" e um arquivo "sudoku_facil.txt"
+    # Isso cumpre os requisitos [cite: 8, 13]
+    NOME_ARQUIVO = "sudoku_facil.txt"
+    CAMINHO_PASTA = "dados"
+    caminho_instancia = os.path.join(CAMINHO_PASTA, NOME_ARQUIVO)
+    
+    # 2. CARREGAR A INSTÂNCIA
+    tabuleiro_exemplo = carregar_instancia_de_arquivo(caminho_instancia)
 
-if resolver(tabuleiro_exemplo):
-    print("\nSudoku resolvido:")
+    # Se não conseguir carregar, encerra o programa
+    if tabuleiro_exemplo is None:
+        print(f"Por favor, crie a pasta '{CAMINHO_PASTA}' e o arquivo '{NOME_ARQUIVO}' nela.")
+        return
+
+    # 3. EXECUTAR E MOSTRAR
+    # Faz uma cópia do tabuleiro original (para saber quais números já existiam)
+    original = [linha[:] for linha in tabuleiro_exemplo]
+
+    print(f"Instância carregada de: '{caminho_instancia}'")
+    print("Tabuleiro inicial:")
     mostrar(tabuleiro_exemplo, original)
-else:
-    print("Não existe solução para este Sudoku.")
+
+    if resolver(tabuleiro_exemplo):
+        print(f"\n{Fore.GREEN}Sudoku resolvido! (Técnica: Backtracking)")
+        mostrar(tabuleiro_exemplo, original)
+    else:
+        print(f"{Fore.RED}\nNão existe solução para este Sudoku.")
+
+
+# Garante que a função main() seja executada quando o script for rodado
+if __name__ == "__main__":
+    main()
