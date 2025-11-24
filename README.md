@@ -13,7 +13,7 @@ Este projeto implementa um algoritmo em Python para resolver quebra-cabeças de 
 
 Confira o vídeo de demonstração e explicação do projeto no link abaixo:
 
-[![Assista ao Vídeo](https://img.youtube.com/vi/VIDEO_ID_AQUI/maxresdefault.jpg)](https://www.youtube.com/watch?v=VIDEO_ID_AQUI)
+[![Assista ao Vídeo](https://youtu.be/xF4W2MIuPuw)](https://youtu.be/xF4W2MIuPuw)
 
 
 
