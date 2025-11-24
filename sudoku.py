@@ -2,7 +2,6 @@ import os
 from colorama import Fore, Style, init
 init(autoreset=True)
 
-# --- Funções do seu código original (estão corretas) ---
 
 def mostrar(tabuleiro, original=None):
     """Exibe o Sudoku com cores: ciano para originais, verde para resolvidos."""
@@ -72,7 +71,6 @@ def resolver(tabuleiro):
 
     return False  # sem solução possível
 
-# --- Função ADICIONADA para cumprir os requisitos ---
 
 def carregar_instancia_de_arquivo(caminho_arquivo):
     """
